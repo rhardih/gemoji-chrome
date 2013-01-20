@@ -1,0 +1,40 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-image: url(dust.png);
+  width: 300px;
+}
+
+#search-container {
+  padding: 15px;
+  background-color: rgba(0, 0, 255, 0.4);
+}
+
+#search {
+  width: 100%;
+}
+
+#name {
+  padding: 5px 15px;
+  font-family: monospace;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin-bottom: 5px;
+}
+
+#emojis {
+  height: 500px;
+  overflow: auto;
+}
+
+.emoji {
+  float: left;
+  cursor: pointer;
+}
+
+img {
+  width: 30px;
+  height: 30px;
+}

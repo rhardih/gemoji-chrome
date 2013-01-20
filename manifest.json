@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+
+  "name": "gemoji-chrome",
+  "description": "This extension provides easy access to gemojis",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "smiley.png",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentscript.js"]
+    }
+  ]
+}
