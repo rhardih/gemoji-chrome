@@ -5,12 +5,11 @@ Chrome plugin for finding and inserting gemoji shortcodes.
 
 Here's a short demo of using it with Flowdock:
 
-![Demo](/demo.gif)
+![Demo](https://raw.github.com/rhardih/gemoji-chrome/master/demo.gif)
 
 ### License
 
 MIT: http://rhardih.mit-license.org
-
 
 ### License and copyright for images
 
