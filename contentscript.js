@@ -2,7 +2,7 @@
 // http://www.scottklarr.com/topic/425/how-to-insert-text-into-a-textarea-where-the-cursor-is/
 function insertAtCaret(text) {
   var txtarea = document.activeElement;
-  console.log(txtarea);
+
   var scrollPos = txtarea.scrollTop;
   var strPos = 0;
   var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
