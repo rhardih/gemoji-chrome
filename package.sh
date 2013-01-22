@@ -24,5 +24,10 @@ popd
 
 popd
 
+if [ ! -f gemoji-chrome.zip ];
+then
+  rm gemoji-chrome.zip
+fi
+
 mv tmp/gemoji-chrome.zip .
 rm -rf tmp
