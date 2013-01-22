@@ -14,6 +14,9 @@ pushd tmp
 zip -d gemoji-chrome.zip .gitmodules
 zip -d gemoji-chrome.zip emoji
 zip -d gemoji-chrome.zip gemoji/
+zip -d gemoji-chrome.zip README.md
+zip -d gemoji-chrome.zip create_images_js.sh
+zip -d gemoji-chrome.zip demo.gif
 
 pushd gemoji/images
 zip -r ../../gemoji-chrome.zip emoji
