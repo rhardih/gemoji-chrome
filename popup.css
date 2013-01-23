@@ -17,24 +17,22 @@ body {
   width: 100%;
 }
 
-#name {
+#highlight {
   padding: 5px 15px;
   font-family: monospace;
   background-color: rgba(0, 0, 0, 0.1);
   margin-bottom: 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 #emojis {
-  height: 500px;
+  height: 300px; /* 10 rows */
   overflow: auto;
 }
 
 .emoji {
   float: left;
   cursor: pointer;
-}
-
-img {
   width: 30px;
   height: 30px;
 }

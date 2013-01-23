@@ -3,7 +3,7 @@
 
   "name": "gemoji-chrome",
   "description": "This extension provides easy access to gemojis",
-  "version": "1.0",
+  "version": "1.1",
 
   "browser_action": {
     "default_icon": "smiley.png",
