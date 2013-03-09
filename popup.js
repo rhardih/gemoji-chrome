@@ -1,5 +1,5 @@
 /**
- * Loads <count> images from the globale images
+ * Loads <count> images from the global images
  * array, starting at <offset> and inserts them
  * into the <target> element.
  */
@@ -79,5 +79,50 @@ window.onload = function() {
       self.close();
     }
   });
-};
 
+  var current_index = undefined;
+
+  function move_highlight(i) {
+    if (current_index === undefined) {
+      current_index = 0;
+    } else {
+      images[current_index].element.className = "emoji";
+      current_index += i;
+    }
+
+    if (current_index < 0) {
+      current_index = 0;
+    }
+
+    if (current_index > images.length - 1) {
+      current_index = images.length - 1;
+    }
+
+    images[current_index].element.className = "emoji highlight";
+
+    update_name_highlight();
+  }
+
+  document.onkeydown = function(e) {
+    if (e.keyCode == 13) { // enter
+      console.log("enter");
+    }
+
+    if (e.keyCode == 37) { // left arrow
+      move_highlight(-1);
+    }
+
+    if (e.keyCode == 38) { // up arrow
+      move_highlight(-10);
+    }
+
+    if (e.keyCode == 39) { // right arrow
+      move_highlight(1);
+    }
+
+    if (e.keyCode == 40) { // down arrow
+      move_highlight(10);
+    }
+  }
+
+};
