@@ -51,33 +51,6 @@ function set_shortcode_label(name) {
 }
 
 /**
- * Moves the highlight in a direction determined by <i> and
- * updates the shortcode label.
- *
- * Left is -1, right is 1 and since rows are of length 10,
- * up is -10 and down is 10.
- */
-function move_highlight(i) {
-  if (current_index === undefined) {
-    current_index = 0;
-  } else {
-    images[current_index].element.className = "emoji";
-    current_index += i;
-  }
-
-  if (current_index < 0) {
-    current_index = 0;
-  }
-
-  if (current_index > images.length - 1) {
-    current_index = images.length - 1;
-  }
-
-  images[current_index].element.className = "emoji highlight";
-  set_shortcode_label(images[current_index].name);
-}
-
-/**
  * Removes highlight from previously highlighted emoji
  * and adds it to the one present at <index>
  */
@@ -159,23 +132,37 @@ window.onload = function() {
 }
 
 document.onkeydown = function(e) {
-  if (e.keyCode == 13) { // enter
-    select_and_close(images[current_index]);
-  }
-
-  if (e.keyCode == 37) { // left arrow
-    move_highlight(-1);
-  }
-
-  if (e.keyCode == 38) { // up arrow
-    move_highlight(-10);
-  }
-
-  if (e.keyCode == 39) { // right arrow
-    move_highlight(1);
-  }
-
-  if (e.keyCode == 40) { // down arrow
-    move_highlight(10);
+  if (current_index === undefined) {
+    switch(e.keyCode) {
+      case 13: // enter
+        break;
+      case 37: // left arrow
+      case 38: // up arrow
+      case 39: // right arrow
+      case 40: // down arrow
+      default:
+        move_highlight_to(0);
+        break;
+    }
+  } else {
+    switch(e.keyCode) {
+      case 13: // enter
+        select_and_close(images[current_index]);
+        break;
+      case 37: // left arrow
+        move_highlight_to(current_index - 1);
+        break;
+      case 38: // up arrow
+        move_highlight_to(current_index - 10);
+        break;
+      case 39: // right arrow
+        move_highlight_to(current_index + 1);
+        break;
+      case 40: // down arrow
+        move_highlight_to(current_index + 10);
+        break;
+      default:
+        break;
+    }
   }
 }
