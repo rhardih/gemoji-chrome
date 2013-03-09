@@ -77,6 +77,30 @@ function move_highlight(i) {
   set_shortcode_label(images[current_index].name);
 }
 
+/**
+ * Removes highlight from previously highlighted emoji
+ * and adds it to the one present at <index>
+ */
+function move_highlight_to(index) {
+  // If any, remove previous highlight
+  if (current_index !== undefined) {
+    images[current_index].element.className = "emoji";
+  }
+
+  current_index = index;
+
+  // Update current index
+  if (index < 0) {
+    current_index = 0;
+  }
+
+  if (index > images.length - 1) {
+    current_index = images.length - 1;
+  }
+
+  images[current_index].element.className = "emoji highlight";
+}
+
 // GLOBAL VARS
 
 var immediately_loaded = document.createElement("div");
@@ -108,19 +132,7 @@ window.onload = function() {
   // Setup setting of shortcode_label on hover
   images.forEach(function(image, index) {
     image.element.onmouseover = function() {
-      if (current_index === undefined) {
-        current_index = index;
-      };
-
-      // Remove existing highlight
-      images[current_index].element.className = "emoji";
-
-      // Highlight current
-      images[index].element.className = "emoji highlight";
-
-      // Update current_index
-      current_index = index;
-
+      move_highlight_to(index);
       set_shortcode_label(image.name);
     }
   });
