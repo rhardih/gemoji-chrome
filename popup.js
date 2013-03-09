@@ -131,26 +131,26 @@ window.onload = function() {
       select_and_close(image);
     }
   });
+}
 
-  document.onkeydown = function(e) {
-    if (e.keyCode == 13) { // enter
-      select_and_close(images[current_index]);
-    }
-
-    if (e.keyCode == 37) { // left arrow
-      move_highlight(-1);
-    }
-
-    if (e.keyCode == 38) { // up arrow
-      move_highlight(-10);
-    }
-
-    if (e.keyCode == 39) { // right arrow
-      move_highlight(1);
-    }
-
-    if (e.keyCode == 40) { // down arrow
-      move_highlight(10);
-    }
+document.onkeydown = function(e) {
+  if (e.keyCode == 13) { // enter
+    select_and_close(images[current_index]);
   }
-};
+
+  if (e.keyCode == 37) { // left arrow
+    move_highlight(-1);
+  }
+
+  if (e.keyCode == 38) { // up arrow
+    move_highlight(-10);
+  }
+
+  if (e.keyCode == 39) { // right arrow
+    move_highlight(1);
+  }
+
+  if (e.keyCode == 40) { // down arrow
+    move_highlight(10);
+  }
+}
