@@ -45,7 +45,7 @@ function select_and_close(image) {
  * label to <name>
  */
 function set_shortcode_label(name) {
-  highlight.innerText = ":" + name + ":";
+  shortcode_label.innerText = ":" + name + ":";
 }
 
 var immediately_loaded = document.createElement("div");
@@ -60,7 +60,7 @@ load_images(0, 100, immediately_loaded);
 
 window.onload = function() {
   var emojis = document.getElementById("emojis");
-  var highlight = document.getElementById("highlight");
+  var shortcode_label = document.getElementById("shortcode_label");
 
   // Add the 100 first images
   emojis.appendChild(immediately_loaded);

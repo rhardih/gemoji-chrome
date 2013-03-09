@@ -17,7 +17,7 @@ body {
   width: 100%;
 }
 
-#highlight {
+#shortcode_label {
   padding: 5px 15px;
   font-family: monospace;
   background-color: rgba(0, 0, 0, 0.1);
