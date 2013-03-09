@@ -144,6 +144,7 @@ document.onkeydown = function(e) {
         move_highlight_to(0);
         break;
     }
+    set_shortcode_label(images[0].name);
   } else {
     switch(e.keyCode) {
       case 13: // enter
@@ -164,5 +165,6 @@ document.onkeydown = function(e) {
       default:
         break;
     }
+    set_shortcode_label(images[current_index].name);
   }
 }
