@@ -105,9 +105,22 @@ window.onload = function() {
   load_images(100, images.length - 100, remaining);
   emojis.appendChild(remaining);
 
-  // Setup shortcode highlight on hover
-  images.forEach(function(image) {
+  // Setup setting of shortcode_label on hover
+  images.forEach(function(image, index) {
     image.element.onmouseover = function() {
+      if (current_index === undefined) {
+        current_index = index;
+      };
+
+      // Remove existing highlight
+      images[current_index].element.className = "emoji";
+
+      // Highlight current
+      images[index].element.className = "emoji highlight";
+
+      // Update current_index
+      current_index = index;
+
       set_shortcode_label(image.name);
     }
   });
