@@ -114,7 +114,7 @@ window.onload = function() {
 
   document.onkeydown = function(e) {
     if (e.keyCode == 13) { // enter
-      console.log("enter");
+      select_and_close(images[current_index]);
     }
 
     if (e.keyCode == 37) { // left arrow
