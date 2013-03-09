@@ -40,6 +40,13 @@ function select_and_close(image) {
   self.close();
 }
 
+/**
+ * Updates the content of the shortcode
+ * label to <name>
+ */
+function set_shortcode_label(name) {
+  highlight.innerText = ":" + name + ":";
+}
 
 var immediately_loaded = document.createElement("div");
 immediately_loaded.className = "emojis";
@@ -65,7 +72,7 @@ window.onload = function() {
   // Setup shortcode highlight on hover
   images.forEach(function(image) {
     image.element.onmouseover = function() {
-      highlight.innerText = ":" + image.name + ":";
+      set_shortcode_label(image.name);
     }
   });
 
