@@ -115,8 +115,7 @@ window.onload = function() {
     }
 
     images[current_index].element.className = "emoji highlight";
-
-    update_name_highlight();
+    set_shortcode_label(images[current_index].name);
   }
 
   document.onkeydown = function(e) {
