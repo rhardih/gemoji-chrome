@@ -50,6 +50,33 @@ function set_shortcode_label(name) {
   shortcode_label.innerText = ":" + name + ":";
 }
 
+/**
+ * Moves the highlight in a direction determined by <i> and
+ * updates the shortcode label.
+ *
+ * Left is -1, right is 1 and since rows are of length 10,
+ * up is -10 and down is 10.
+ */
+function move_highlight(i) {
+  if (current_index === undefined) {
+    current_index = 0;
+  } else {
+    images[current_index].element.className = "emoji";
+    current_index += i;
+  }
+
+  if (current_index < 0) {
+    current_index = 0;
+  }
+
+  if (current_index > images.length - 1) {
+    current_index = images.length - 1;
+  }
+
+  images[current_index].element.className = "emoji highlight";
+  set_shortcode_label(images[current_index].name);
+}
+
 // GLOBAL VARS
 
 var immediately_loaded = document.createElement("div");
@@ -104,26 +131,6 @@ window.onload = function() {
       select_and_close(image);
     }
   });
-
-  function move_highlight(i) {
-    if (current_index === undefined) {
-      current_index = 0;
-    } else {
-      images[current_index].element.className = "emoji";
-      current_index += i;
-    }
-
-    if (current_index < 0) {
-      current_index = 0;
-    }
-
-    if (current_index > images.length - 1) {
-      current_index = images.length - 1;
-    }
-
-    images[current_index].element.className = "emoji highlight";
-    set_shortcode_label(images[current_index].name);
-  }
 
   document.onkeydown = function(e) {
     if (e.keyCode == 13) { // enter
