@@ -1,3 +1,5 @@
+// UTILITY FUNCTIONS
+
 /**
  * Loads <count> images from the global images
  * array, starting at <offset> and inserts them
@@ -48,6 +50,8 @@ function set_shortcode_label(name) {
   shortcode_label.innerText = ":" + name + ":";
 }
 
+// GLOBAL VARS
+
 var immediately_loaded = document.createElement("div");
 immediately_loaded.className = "emojis";
 
@@ -58,9 +62,14 @@ remaining.className = "emojis";
 // This improves the load time of the popup
 load_images(0, 100, immediately_loaded);
 
+var current_index = undefined;
+var emojis, shortcode_label, search;
+
+// EVENT HANDLERS
+
 window.onload = function() {
-  var emojis = document.getElementById("emojis");
-  var shortcode_label = document.getElementById("shortcode_label");
+  emojis = document.getElementById("emojis");
+  shortcode_label = document.getElementById("shortcode_label");
 
   // Add the 100 first images
   emojis.appendChild(immediately_loaded);
@@ -77,7 +86,7 @@ window.onload = function() {
   });
 
   // Setup search
-  var search = document.getElementById("search");
+  search = document.getElementById("search");
   search.onkeyup = function() {
     filter_emojis(search.value);
   };
@@ -95,8 +104,6 @@ window.onload = function() {
       select_and_close(image);
     }
   });
-
-  var current_index = undefined;
 
   function move_highlight(i) {
     if (current_index === undefined) {
@@ -139,5 +146,4 @@ window.onload = function() {
       move_highlight(10);
     }
   }
-
 };
