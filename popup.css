@@ -21,12 +21,12 @@ body {
   padding: 5px 15px;
   font-family: monospace;
   background-color: rgba(0, 0, 0, 0.1);
-  margin-bottom: 5px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 #emojis {
   height: 300px; /* 10 rows */
+  padding-top: 5px;
   overflow: auto;
 }
 
