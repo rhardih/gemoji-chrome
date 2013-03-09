@@ -29,6 +29,18 @@ function filter_emojis(query) {
   };
 };
 
+/**
+ * Signals the content script that <image>
+ * has been selected and closes the popup.
+ */
+function select_and_close(image) {
+  chrome.tabs.getSelected(null, function(tab) {
+    chrome.tabs.sendMessage(tab.id, { message: ":" + image.name + ":" });
+  });
+  self.close();
+}
+
+
 var immediately_loaded = document.createElement("div");
 immediately_loaded.className = "emojis";
 
@@ -73,10 +85,7 @@ window.onload = function() {
   // Setup handler for clicking on emojis
   images.forEach(function(image) {
     image.element.onclick = function() {
-      chrome.tabs.getSelected(null, function(tab) {
-        chrome.tabs.sendMessage(tab.id, { message: ":" + image.name + ":" });
-      });
-      self.close();
+      select_and_close(image);
     }
   });
 
