@@ -22,9 +22,11 @@ function load_images(offset, count, target) {
  * out those that do not match <query>.
  */
 function filter_emojis(query) {
+  filtered_images = [];
   for(var i = 0; i < images.length; i++) {
     if(images[i].name.indexOf(query.toLowerCase()) !== -1) {
       images[i].element.style.display = "block";
+      filtered_images.push(images[i]);
     } else {
       images[i].element.style.display = "none";
     }
@@ -52,26 +54,36 @@ function set_shortcode_label(name) {
 
 /**
  * Removes highlight from previously highlighted emoji
- * and adds it to the one present at <index>
+ * and adds it to the one present at <image>
  */
-function move_highlight_to(index) {
-  // If any, remove previous highlight
-  if (current_index !== undefined) {
-    images[current_index].element.className = "emoji";
+function move_highlight_to(image) {
+  unhighlight(currently_highlighted);
+  currently_highlighted = image;
+  highlight(image);
+}
+
+/**
+ * Adds the class "highlight" to the dom element
+ * of <image>.
+ *
+ * Also updates the shortcode label with the
+ * name of the image.
+ */
+function highlight(image) {
+  if (image) {
+    image.element.className = "emoji highlight";
+    set_shortcode_label(image.name);
   }
+}
 
-  current_index = index;
-
-  // Update current index
-  if (index < 0) {
-    current_index = 0;
+/**
+ * Removes the class "highlight" from the dom
+ * element of <image>.
+ */
+function unhighlight(image) {
+  if (image) {
+    image.element.className = "emoji";
   }
-
-  if (index > images.length - 1) {
-    current_index = images.length - 1;
-  }
-
-  images[current_index].element.className = "emoji highlight";
 }
 
 // GLOBAL VARS
@@ -86,8 +98,13 @@ remaining.className = "emojis";
 // This improves the load time of the popup
 load_images(0, 100, immediately_loaded);
 
-var current_index = undefined;
 var emojis, shortcode_label, search;
+
+var filtered_images = images;
+
+var currently_highlighted = undefined;
+var keyboard_navigation_enabled = false;
+var mouseover_enabled = true;
 
 // EVENT HANDLERS
 
@@ -103,18 +120,29 @@ window.onload = function() {
   emojis.appendChild(remaining);
 
   // Setup setting of shortcode_label on hover
-  images.forEach(function(image, index) {
+  images.forEach(function(image) {
     image.element.onmouseover = function() {
-      move_highlight_to(index);
-      set_shortcode_label(image.name);
+      if (mouseover_enabled) {
+        move_highlight_to(image);
+      }
     }
   });
 
   // Setup search
   search = document.getElementById("search");
-  search.onkeyup = function() {
+  search.onkeyup = function(e) {
     filter_emojis(search.value);
   };
+
+  search.onblur = function(e) {
+    keyboard_navigation_enabled = true;
+    move_highlight_to(filtered_images[0]);
+  }
+
+  search.onfocus = function() {
+    keyboard_navigation_enabled = false;
+    unhighlight(currently_highlighted);
+  }
 
   // Handle clicking the "x" to cancel current search
   search.onclick = function() {
@@ -132,39 +160,59 @@ window.onload = function() {
 }
 
 document.onkeydown = function(e) {
-  if (current_index === undefined) {
+  if (keyboard_navigation_enabled) {
+    var currently_highlighted_index = filtered_images.indexOf(currently_highlighted);
+    var offset;
+
     switch(e.keyCode) {
       case 13: // enter
+        select_and_close(currently_highlighted);
         break;
       case 37: // left arrow
-      case 38: // up arrow
-      case 39: // right arrow
-      case 40: // down arrow
-      default:
-        move_highlight_to(0);
-        break;
-    }
-    set_shortcode_label(images[0].name);
-  } else {
-    switch(e.keyCode) {
-      case 13: // enter
-        select_and_close(images[current_index]);
-        break;
-      case 37: // left arrow
-        move_highlight_to(current_index - 1);
+        offset = -1;
         break;
       case 38: // up arrow
-        move_highlight_to(current_index - 10);
+        offset = -10;
         break;
       case 39: // right arrow
-        move_highlight_to(current_index + 1);
+        offset = 1;
         break;
       case 40: // down arrow
-        move_highlight_to(current_index + 10);
+        offset = 10;
         break;
       default:
-        break;
+        return;
     }
-    set_shortcode_label(images[current_index].name);
+
+    var new_index = currently_highlighted_index + offset;
+
+    if (new_index < 0) {
+      new_index = 0;
+    }
+
+    if (new_index > filtered_images.length - 1) {
+      new_index = filtered_images.length - 1;
+    }
+
+    var image = filtered_images[new_index];
+    move_highlight_to(image);
+
+    // If the mouse pointer is hovered over the popup when
+    // scrollIntoView is called, an undesired mouseover event
+    // is fired, which negates the scroll.
+    //
+    // Setting mouseover_enabled to false until next mouse movement
+    // solves this problem.
+    mouseover_enabled = false;
+    image.element.scrollIntoView(false);
+
+    // Prevents undesired arrow key scrolling when tabbing
+    // out of the search input onto the first image.
+    e.preventDefault();
   }
+}
+
+document.onmousemove = function() {
+  keyboard_navigation_enabled = true;
+  mouseover_enabled = true;
 }
