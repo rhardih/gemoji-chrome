@@ -16,3 +16,13 @@ MIT: http://rhardih.mit-license.org
 ### License and copyright for images
 
 See https://github.com/github/gemoji/blob/master/LICENSE
+
+### Changelog
+
+**1.3**: Added keyboard navigation.
+
+**1.2**: Set permissions specifically to "tabs".
+
+**1.1**: Reduced popup load time. (~1s to ~340ms)
+
+**1.0**: Initial version.
