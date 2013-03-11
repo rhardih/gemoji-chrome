@@ -204,7 +204,10 @@ document.onkeydown = function(e) {
     // Setting mouseover_enabled to false until next mouse movement
     // solves this problem.
     mouseover_enabled = false;
-    image.element.scrollIntoView(false);
+
+    // Webkit specific. Works like scrollIntoView, with the important
+    // difference of not realigning if already inside current viewport.
+    image.element.scrollIntoViewIfNeeded(false);
 
     // Prevents undesired arrow key scrolling when tabbing
     // out of the search input onto the first image.
