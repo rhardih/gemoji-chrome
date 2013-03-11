@@ -17,16 +17,16 @@ body {
   width: 100%;
 }
 
-#highlight {
+#shortcode_label {
   padding: 5px 15px;
   font-family: monospace;
   background-color: rgba(0, 0, 0, 0.1);
-  margin-bottom: 5px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 #emojis {
   height: 300px; /* 10 rows */
+  padding-top: 5px;
   overflow: auto;
 }
 
@@ -35,4 +35,9 @@ body {
   cursor: pointer;
   width: 30px;
   height: 30px;
+}
+
+.emoji.highlight {
+  background-color: rgba(0, 0, 255, 0.1);
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 255, 0.15);
 }
