@@ -110,17 +110,6 @@ function unhighlight(image) {
 }
 
 // GLOBAL VARS
-
-var immediately_loaded = document.createElement("div");
-immediately_loaded.className = "emojis";
-
-var remaining = document.createElement("div");
-remaining.className = "emojis";
-
-// Fill only the first 100 images.
-// This improves the load time of the popup
-load_images(0, 100, immediately_loaded);
-
 var emojis, shortcode_label, search;
 
 var filtered_emojis = emojis;
