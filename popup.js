@@ -88,9 +88,12 @@ function move_highlight_to(image) {
  * name of the image.
  */
 function highlight(image) {
+  var cn, name;
   if (image) {
-    image.element.className = "emoji highlight";
-    set_shortcode_label(image.name);
+    cn = ["emoji", "emoji-" + image.name, "highlight"].join(" ");
+    image.element.className = cn;
+    name = emoji_name_map[image.name] || image.name;
+    set_shortcode_label(name);
   }
 }
 
@@ -99,8 +102,10 @@ function highlight(image) {
  * element of <image>.
  */
 function unhighlight(image) {
+  var cn;
   if (image) {
-    image.element.className = "emoji";
+    cn = ["emoji", "emoji-" + image.name].join(" ");
+    image.element.className = cn;
   }
 }
 
