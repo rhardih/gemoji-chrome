@@ -118,11 +118,19 @@ load_images(0, 100, immediately_loaded);
 
 var emojis, shortcode_label, search;
 
-var filtered_images = images;
+var filtered_emojis = emojis;
 
 var currently_highlighted = undefined;
 var keyboard_navigation_enabled = false;
 var mouseover_enabled = true;
+
+var emoji_name_map = {
+  "plusone": "+1",
+  "minusone": "-1",
+  "onehundred": "100",
+  "onetwothreefour": "1234",
+  "eightball": "8ball"
+}
 
 // EVENT HANDLERS
 
@@ -154,7 +162,7 @@ window.onload = function() {
 
   search.onblur = function(e) {
     keyboard_navigation_enabled = true;
-    move_highlight_to(filtered_images[0]);
+    move_highlight_to(filtered_emojis[0]);
   }
 
   search.onfocus = function() {
@@ -179,7 +187,7 @@ window.onload = function() {
 
 document.onkeydown = function(e) {
   if (keyboard_navigation_enabled) {
-    var currently_highlighted_index = filtered_images.indexOf(currently_highlighted);
+    var currently_highlighted_index = filtered_emojis.indexOf(currently_highlighted);
     var offset;
 
     switch(e.keyCode) {
@@ -208,11 +216,11 @@ document.onkeydown = function(e) {
       new_index = 0;
     }
 
-    if (new_index > filtered_images.length - 1) {
-      new_index = filtered_images.length - 1;
+    if (new_index > filtered_emojis.length - 1) {
+      new_index = filtered_emojis.length - 1;
     }
 
-    var image = filtered_images[new_index];
+    var image = filtered_emojis[new_index];
     move_highlight_to(image);
 
     // If the mouse pointer is hovered over the popup when
