@@ -132,22 +132,6 @@ window.onload = function() {
   emojis = document.getElementById("emojis");
   shortcode_label = document.getElementById("shortcode_label");
 
-  // Add the 100 first images
-  emojis.appendChild(immediately_loaded);
-
-  // Add the rest of the images
-  load_images(100, images.length - 100, remaining);
-  emojis.appendChild(remaining);
-
-  // Setup setting of shortcode_label on hover
-  images.forEach(function(image) {
-    image.element.onmouseover = function() {
-      if (mouseover_enabled) {
-        move_highlight_to(image);
-      }
-    }
-  });
-
   // Setup search
   search = document.getElementById("search");
   search.onkeyup = function(e) {
