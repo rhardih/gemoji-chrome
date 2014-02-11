@@ -1,20 +1,36 @@
 // UTILITY FUNCTIONS
 
 /**
- * Loads <count> images from the global images
- * array, starting at <offset> and inserts them
- * into the <target> element.
+ * Creates dom nodes with required classes
+ * for all emojis in the sprite sheet.
  */
-function load_images(offset, count, target) {
-  for(var i = offset; i < count + offset; i++) {
-    var image_node = document.createElement("img");
-    var name = images[i].name;
-    image_node.src = "emoji/" + name + ".png";
-    image_node.className = "emoji";
+function add_dom_nodes(target) {
+  var node;
 
-    images[i].element = image_node;
-    target.appendChild(image_node);
-  };
+  emojis.forEach(function(emoji) {
+    node = document.createElement("div");
+    node.className = "emoji emoji-" + emoji.name;
+    emoji.element = node;
+
+    attach_listeners(emoji);
+
+    target.appendChild(node);
+  });
+};
+
+function attach_listeners(emoji) {
+  // Setup setting of shortcode_label on hover
+  // as well as highlight
+  emoji.element.onmouseover = function() {
+    if (mouseover_enabled) {
+      move_highlight_to(emoji);
+    }
+  }
+
+  // Setup handler for clicking on emojis
+  emoji.element.onclick = function() {
+    select_and_close(emoji);
+  }
 };
 
 /**
@@ -22,15 +38,16 @@ function load_images(offset, count, target) {
  * out those that do not match <query>.
  */
 function filter_emojis(query) {
-  filtered_images = [];
-  for(var i = 0; i < images.length; i++) {
-    if(images[i].name.indexOf(query.toLowerCase()) !== -1) {
-      images[i].element.style.display = "block";
-      filtered_images.push(images[i]);
+  filtered_emojis = [];
+  emojis.forEach(function(emoji) {
+    var name = emoji_name_map[emoji.name] || emoji.name;
+    if(name.indexOf(query.toLowerCase()) !== -1) {
+      emoji.element.style.display = "block";
+      filtered_emojis.push(emoji);
     } else {
-      images[i].element.style.display = "none";
+      emoji.element.style.display = "none";
     }
-  };
+  });
 };
 
 /**
@@ -38,8 +55,9 @@ function filter_emojis(query) {
  * has been selected and closes the popup.
  */
 function select_and_close(image) {
+  var name = emoji_name_map[image.name] || image.name;
   chrome.tabs.getSelected(null, function(tab) {
-    chrome.tabs.sendMessage(tab.id, { message: ":" + image.name + ":" });
+    chrome.tabs.sendMessage(tab.id, { message: ":" + name + ":" });
   });
   self.close();
 }
@@ -70,9 +88,12 @@ function move_highlight_to(image) {
  * name of the image.
  */
 function highlight(image) {
+  var cn, name;
   if (image) {
-    image.element.className = "emoji highlight";
-    set_shortcode_label(image.name);
+    cn = ["emoji", "emoji-" + image.name, "highlight"].join(" ");
+    image.element.className = cn;
+    name = emoji_name_map[image.name] || image.name;
+    set_shortcode_label(name);
   }
 }
 
@@ -81,52 +102,35 @@ function highlight(image) {
  * element of <image>.
  */
 function unhighlight(image) {
+  var cn;
   if (image) {
-    image.element.className = "emoji";
+    cn = ["emoji", "emoji-" + image.name].join(" ");
+    image.element.className = cn;
   }
 }
 
 // GLOBAL VARS
-
-var immediately_loaded = document.createElement("div");
-immediately_loaded.className = "emojis";
-
-var remaining = document.createElement("div");
-remaining.className = "emojis";
-
-// Fill only the first 100 images.
-// This improves the load time of the popup
-load_images(0, 100, immediately_loaded);
-
 var emojis, shortcode_label, search;
 
-var filtered_images = images;
+var filtered_emojis = emojis;
 
 var currently_highlighted = undefined;
 var keyboard_navigation_enabled = false;
 var mouseover_enabled = true;
+
+var emoji_name_map = {
+  "plusone": "+1",
+  "minusone": "-1",
+  "onehundred": "100",
+  "onetwothreefour": "1234",
+  "eightball": "8ball"
+}
 
 // EVENT HANDLERS
 
 window.onload = function() {
   emojis = document.getElementById("emojis");
   shortcode_label = document.getElementById("shortcode_label");
-
-  // Add the 100 first images
-  emojis.appendChild(immediately_loaded);
-
-  // Add the rest of the images
-  load_images(100, images.length - 100, remaining);
-  emojis.appendChild(remaining);
-
-  // Setup setting of shortcode_label on hover
-  images.forEach(function(image) {
-    image.element.onmouseover = function() {
-      if (mouseover_enabled) {
-        move_highlight_to(image);
-      }
-    }
-  });
 
   // Setup search
   search = document.getElementById("search");
@@ -136,7 +140,7 @@ window.onload = function() {
 
   search.onblur = function(e) {
     keyboard_navigation_enabled = true;
-    move_highlight_to(filtered_images[0]);
+    move_highlight_to(filtered_emojis[0]);
   }
 
   search.onfocus = function() {
@@ -151,17 +155,39 @@ window.onload = function() {
     }
   }
 
-  // Setup handler for clicking on emojis
-  images.forEach(function(image) {
-    image.element.onclick = function() {
-      select_and_close(image);
-    }
-  });
+  var emojis = document.createElement("div");
+  emojis.id = "emojis";
+
+  add_dom_nodes(emojis);
+
+  var body = document.querySelector("body");
+  body.style.width = 300 + getScrollbarWidth() + "px";
+
+  body.appendChild(emojis);
+}
+
+function getScrollbarWidth() {
+  var outer = document.createElement("div");
+  outer.style.visibility = "hidden";
+  outer.style.width = "100px";
+  document.body.appendChild(outer);
+
+  var widthNoScroll = outer.offsetWidth;
+  outer.style.overflow = "scroll";
+
+  var inner = document.createElement("div");
+  inner.style.width = "100%";
+  outer.appendChild(inner);
+
+  var widthWithScroll = inner.offsetWidth;
+  outer.parentNode.removeChild(outer);
+
+  return widthNoScroll - widthWithScroll;
 }
 
 document.onkeydown = function(e) {
   if (keyboard_navigation_enabled) {
-    var currently_highlighted_index = filtered_images.indexOf(currently_highlighted);
+    var currently_highlighted_index = filtered_emojis.indexOf(currently_highlighted);
     var offset;
 
     switch(e.keyCode) {
@@ -190,11 +216,11 @@ document.onkeydown = function(e) {
       new_index = 0;
     }
 
-    if (new_index > filtered_images.length - 1) {
-      new_index = filtered_images.length - 1;
+    if (new_index > filtered_emojis.length - 1) {
+      new_index = filtered_emojis.length - 1;
     }
 
-    var image = filtered_images[new_index];
+    var image = filtered_emojis[new_index];
     move_highlight_to(image);
 
     // If the mouse pointer is hovered over the popup when
