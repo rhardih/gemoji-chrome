@@ -155,12 +155,34 @@ window.onload = function() {
     }
   }
 
-  // Setup handler for clicking on emojis
-  images.forEach(function(image) {
-    image.element.onclick = function() {
-      select_and_close(image);
-    }
-  });
+  var emojis = document.createElement("div");
+  emojis.id = "emojis";
+
+  add_dom_nodes(emojis);
+
+  var body = document.querySelector("body");
+  body.style.width = 300 + getScrollbarWidth() + "px";
+
+  body.appendChild(emojis);
+}
+
+function getScrollbarWidth() {
+  var outer = document.createElement("div");
+  outer.style.visibility = "hidden";
+  outer.style.width = "100px";
+  document.body.appendChild(outer);
+
+  var widthNoScroll = outer.offsetWidth;
+  outer.style.overflow = "scroll";
+
+  var inner = document.createElement("div");
+  inner.style.width = "100%";
+  outer.appendChild(inner);
+
+  var widthWithScroll = inner.offsetWidth;
+  outer.parentNode.removeChild(outer);
+
+  return widthNoScroll - widthWithScroll;
 }
 
 document.onkeydown = function(e) {
