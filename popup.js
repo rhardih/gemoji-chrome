@@ -55,8 +55,9 @@ function filter_emojis(query) {
  * has been selected and closes the popup.
  */
 function select_and_close(image) {
+  var name = emoji_name_map[image.name] || image.name;
   chrome.tabs.getSelected(null, function(tab) {
-    chrome.tabs.sendMessage(tab.id, { message: ":" + image.name + ":" });
+    chrome.tabs.sendMessage(tab.id, { message: ":" + name + ":" });
   });
   self.close();
 }
