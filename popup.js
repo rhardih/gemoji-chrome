@@ -1,20 +1,36 @@
 // UTILITY FUNCTIONS
 
 /**
- * Loads <count> images from the global images
- * array, starting at <offset> and inserts them
- * into the <target> element.
+ * Creates dom nodes with required classes
+ * for all emojis in the sprite sheet.
  */
-function load_images(offset, count, target) {
-  for(var i = offset; i < count + offset; i++) {
-    var image_node = document.createElement("img");
-    var name = images[i].name;
-    image_node.src = "emoji/" + name + ".png";
-    image_node.className = "emoji";
+function add_dom_nodes(target) {
+  var node;
 
-    images[i].element = image_node;
-    target.appendChild(image_node);
-  };
+  emojis.forEach(function(emoji) {
+    node = document.createElement("div");
+    node.className = "emoji emoji-" + emoji.name;
+    emoji.element = node;
+
+    attach_listeners(emoji);
+
+    target.appendChild(node);
+  });
+};
+
+function attach_listeners(emoji) {
+  // Setup setting of shortcode_label on hover
+  // as well as highlight
+  emoji.element.onmouseover = function() {
+    if (mouseover_enabled) {
+      move_highlight_to(emoji);
+    }
+  }
+
+  // Setup handler for clicking on emojis
+  emoji.element.onclick = function() {
+    select_and_close(emoji);
+  }
 };
 
 /**
