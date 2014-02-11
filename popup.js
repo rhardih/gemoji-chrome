@@ -38,15 +38,16 @@ function attach_listeners(emoji) {
  * out those that do not match <query>.
  */
 function filter_emojis(query) {
-  filtered_images = [];
-  for(var i = 0; i < images.length; i++) {
-    if(images[i].name.indexOf(query.toLowerCase()) !== -1) {
-      images[i].element.style.display = "block";
-      filtered_images.push(images[i]);
+  filtered_emojis = [];
+  emojis.forEach(function(emoji) {
+    var name = emoji_name_map[emoji.name] || emoji.name;
+    if(name.indexOf(query.toLowerCase()) !== -1) {
+      emoji.element.style.display = "block";
+      filtered_emojis.push(emoji);
     } else {
-      images[i].element.style.display = "none";
+      emoji.element.style.display = "none";
     }
-  };
+  });
 };
 
 /**
