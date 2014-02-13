@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "gemoji-chrome",
-  "description": "This extension provides easy access to gemojis",
+  "description": "This extension provides easy access to emoji shortcodes",
   "version": "1.5",
   "permissions": ["tabs"],
   "browser_action": {
