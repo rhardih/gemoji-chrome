@@ -7,7 +7,7 @@ Link to the plugin on the [chrome web-store](https://chrome.google.com/webstore/
 
 Here's a short demo of using it with Flowdock:
 
-![Demo](https://raw.github.com/rhardih/gemoji-chrome/master/demo.gif)
+![Demo](https://raw.github.com/rhardih/gemoji-chrome/master/assets/demo.gif)
 
 ### License
 
